@@ -1,0 +1,19 @@
+# Allegro cube repose with a reward and observation design for holding each goal.
+# Same hand, cube, physics, actions, resets and terminations as allegro_repose.yaml (Isaac Lab);
+# changes below. docs/ENVIRONMENT.md ("Hold variant") explains each one.
+_base: allegro_repose
+
+observation:
+  # Asymmetric: the actor gets what a real hand with a cube tracker measures (joint positions,
+  # fingertip poses, cube / goal / difference orientations as rotation-6D, in-hand target, last
+  # action; 89-D); the critic also gets joint, fingertip and cube velocities and the cube position (138-D).
+  layout: rot6d
+
+goal:
+  dwell_steps: 30         # the cube must stay within tolerance for 1 s before the goal counts and is replaced
+
+reward:
+  # The 250 bonus is paid on every step within tolerance, so with the dwell it pays for holding.
+  orientation_band: 0.31  # orientation reward flat within 0.31 rad (18 deg): no push to keep adjusting near the goal
+  action_rate_scale: -0.05
+  action_rate_band: 0.05  # per-joint target changes up to 0.05 per step are free

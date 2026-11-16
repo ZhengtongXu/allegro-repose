@@ -1,0 +1,17 @@
+# One line per run:  run_name  seed  [scripts/train.py arguments and dotted overrides...]
+# Isaac Lab task and reward (fast goal switching, no hold).
+ppo_s0              0
+ppo_s1              1
+ppo_r6d_s0          0  task.observation.layout=rot6d
+# Hold design (configs/task/allegro_repose_hold.yaml): a goal counts after a dwell on it.
+ppo_hold_s0         0  --task allegro_repose_hold
+ppo_hold_s1         1  --task allegro_repose_hold
+ppo_hold_f100       0  --task allegro_repose_hold task.reward.fall_penalty=-100.0
+ppo_hold_dw60       0  --task allegro_repose_hold task.goal.dwell_steps=60
+ppo_hold_dw60_s1    1  --task allegro_repose_hold task.goal.dwell_steps=60
+ppo_hold_dw90       0  --task allegro_repose_hold task.goal.dwell_steps=90
+ppo_hold_dw90_s1    1  --task allegro_repose_hold task.goal.dwell_steps=90
+ppo_hold_dw120      0  --task allegro_repose_hold task.goal.dwell_steps=120
+ppo_hold_dw90_long  0  --task allegro_repose_hold task.goal.dwell_steps=90 algo.max_iterations=20000
+# Pipeline check (minutes, not a result): small, short run; with STANDBY_CHUNK_MIN=4 it spans several chunks.
+smoke               0  --num-envs 1024 --eval-envs 256 algo.max_iterations=600 algo.save_interval=50 algo.eval_interval=200

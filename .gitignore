@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+runs/
+wandb/
+cluster/logs/
+cluster/site.env
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+MUJOCO_LOG.TXT
+.debug_*.out

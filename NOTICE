@@ -1,0 +1,25 @@
+allegro-repose
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This repository includes third-party material:
+
+1. Allegro Hand V3 model (assets/menagerie_wonik_allegro/)
+   Copied unmodified from MuJoCo Menagerie, wonik_allegro/
+   (https://github.com/google-deepmind/mujoco_menagerie, commit 98a70c569c4c1b6da467a20012f766ee1f8dc521).
+   Copyright (c) 2016, SimLab. Licensed under the BSD-2-Clause License; the license text is
+   reproduced in assets/menagerie_wonik_allegro/LICENSE.
+
+Adapted (no code copied verbatim; values and formulas re-implemented):
+
+2. Isaac Lab (https://github.com/isaac-sim/IsaacLab, tag v2.3.2), BSD-3-Clause License,
+   Copyright (c) 2022-2026, The Isaac Lab Project Developers. The environment re-implements the
+   task Isaac-Repose-Cube-Allegro-Direct-v0 (isaaclab_tasks/direct/allegro_hand,
+   isaaclab_tasks/direct/inhand_manipulation) and the Allegro configuration ALLEGRO_HAND_CFG
+   (isaaclab_assets/robots/allegro.py): observation, reward, reset and termination formulas,
+   simulation rates, actuator gains and limits, joint names, mounting pose and the rsl_rl PPO
+   hyperparameters. Joint limits, the palm mounting frame and the cube size were read from the
+   Isaac Lab Allegro and DexCube assets; those asset files are not included.
+
+Runtime dependencies (installed, not redistributed): mjlab (Apache-2.0), MuJoCo and MuJoCo Warp
+(Apache-2.0), NVIDIA Warp (Apache-2.0), rsl_rl (BSD-3-Clause), PyTorch (BSD-3-Clause),
+Weights & Biases client (MIT).

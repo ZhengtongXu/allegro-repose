@@ -1,0 +1,89 @@
+# Fixed-wrist Allegro hand cube repose: Isaac Lab's Isaac-Repose-Cube-Allegro-Direct-v0
+# (isaaclab_tasks/direct/allegro_hand + inhand_manipulation, Isaac Lab v2.3.2) adapted to mjlab.
+# Values are Isaac Lab's unless a comment says otherwise; docs/ENVIRONMENT.md lists every difference.
+sim:
+  physics_dt: 0.008333333333333333   # 1/120 s
+  decimation: 4                      # 30 Hz control
+  solver_iterations: 100
+  ls_iterations: 50
+  ccd_iterations: 40
+  njmax: 400
+  nconmax: 200
+  impratio: 1.0
+  cone: elliptic
+episode_length_s: 10.0
+
+hand:
+  mjcf: assets/menagerie_wonik_allegro/right_hand.xml
+  # Isaac Lab ALLEGRO_HAND_CFG: implicit PD actuators on every joint.
+  stiffness: 3.0          # N m / rad
+  damping: 0.1            # N m s / rad
+  effort_limit: 0.5       # N m
+  joint_friction: 0.01    # N m
+  # Not in Isaac Lab: PhysX drives are implicit; MuJoCo integrates the PD stiffness explicitly and the
+  # distal links weigh ~7 g, so a small rotor inertia keeps the 120 Hz step stable (fingers still reach a
+  # 0.8 rad step within 3 control steps).
+  armature: 3.0e-4        # kg m^2
+  gravity_compensation: true   # Isaac Lab spawns the hand with disable_gravity=True
+  # Joint limits of the Isaac Lab Allegro asset [deg] (the Menagerie model's own limits are narrower).
+  joint_limits_deg:
+    index_joint_0: [-32.0, 32.0]
+    middle_joint_0: [-32.0, 32.0]
+    ring_joint_0: [-32.0, 32.0]
+    thumb_joint_0: [16.0, 90.0]
+    index_joint_1: [-16.0, 99.0]
+    index_joint_2: [-16.0, 99.0]
+    index_joint_3: [-16.0, 99.0]
+    middle_joint_1: [-16.0, 99.0]
+    middle_joint_2: [-16.0, 99.0]
+    middle_joint_3: [-16.0, 99.0]
+    ring_joint_1: [-16.0, 99.0]
+    ring_joint_2: [-16.0, 99.0]
+    ring_joint_3: [-16.0, 99.0]
+    thumb_joint_1: [-19.0, 66.0]
+    thumb_joint_2: [-16.0, 99.0]
+    thumb_joint_3: [-16.0, 101.0]
+  default_joint_pos: {thumb_joint_0: 0.28}   # every other joint 0
+  # Mounting: Isaac Lab's root pose of the hand asset (pos, wxyz). The palm is placed where the
+  # Isaac Lab asset puts its palm (see assets.py: palm_pose).
+  root_pos: [0.0, 0.0, 0.5]
+  root_quat: [0.257551, 0.283045, 0.683330, -0.621782]
+
+cube:
+  half_size: 0.036        # DexCube (6 cm) at Isaac Lab's scale 1.2
+  density: 400.0          # kg / m^3 -> 0.149 kg
+  init_pos: [0.0, -0.17, 0.56]
+  friction: [1.0, 0.005, 0.0001]   # Isaac Lab material: static = dynamic = 1.0
+  condim: 4                         # torsional friction (the DexCube collider has a torsional patch)
+
+action:
+  clip: 1.0               # a in [-1, 1] maps linearly onto each joint's limits (absolute targets)
+
+observation:
+  vel_obs_scale: 0.2
+  layout: isaaclab        # isaaclab: Isaac Lab "full" 124-D for actor and critic; rot6d: see allegro_repose_hold.yaml
+
+goal:
+  success_tolerance: 0.2  # rad
+  dwell_steps: 1          # steps within tolerance before the goal counts and is replaced (Isaac Lab: 1)
+  # goal = Rx(pi*u0) * Ry(pi*u1), u ~ U(-1, 1); a new goal is sampled on success
+
+reward:
+  dist_reward_scale: -10.0
+  rot_reward_scale: 1.0
+  rot_eps: 0.1
+  orientation_band: 0.0   # rot reward = 1 / (max(0, rot_dist - band) + eps); Isaac Lab: no band
+  action_penalty_scale: -0.0002
+  action_rate_scale: 0.0  # * sum(relu(|a - a_prev| - action_rate_band)^2); Isaac Lab: none
+  action_rate_band: 0.05
+  reach_goal_bonus: 250.0
+  fall_penalty: 0.0
+
+termination:
+  fall_dist: 0.24         # |p_cube - in_hand_pos| >= this ends the episode
+  in_hand_offset_z: -0.04 # in_hand_pos = cube init_pos + (0, 0, this)
+
+reset:
+  position_noise: 0.01    # cube position, uniform per axis
+  dof_pos_noise: 0.2      # hand joints (Isaac Lab formula, see env.reset_hand_and_cube)
+  dof_vel_noise: 0.0

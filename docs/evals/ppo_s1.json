@@ -1,0 +1,14 @@
+{
+  "checkpoint": "runs/ppo_s1/checkpoints/ckpt_9999.pt",
+  "env_steps": 1310720000,
+  "wall_time_h": 3.3468868542379804,
+  "eval/successes_per_episode": 9.498779296875,
+  "eval/successes_median": 10.0,
+  "eval/return": 2569.095458984375,
+  "eval/rot_dist": 1.2083338499069214,
+  "eval/fall_rate": 0.245361328125,
+  "eval/episode_length_s": 8.717358589172363,
+  "video": "docs/videos/ppo_s1.mp4",
+  "goals": 27,
+  "drops": 1
+}

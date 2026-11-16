@@ -1,0 +1,15 @@
+{
+  "checkpoint": "runs/ppo_hold_dw90/checkpoints/ckpt_9999.pt",
+  "env_steps": 1310720000,
+  "wall_time_h": 4.5147100630733705,
+  "eval/successes_per_episode": 1.1298828125,
+  "eval/successes_median": 1.0,
+  "eval/return": 45358.73828125,
+  "eval/rot_dist": 0.543256402015686,
+  "eval/on_goal_frac": 0.59661865234375,
+  "eval/fall_rate": 0.158203125,
+  "eval/episode_length_s": 8.954549789428711,
+  "video": "docs/videos/ppo_hold_dw90_slow.mp4",
+  "goals": 2,
+  "drops": 0
+}

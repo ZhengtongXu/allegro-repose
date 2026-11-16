@@ -1,0 +1,12 @@
+{
+  "checkpoint": "runs/ppo_hold_dw60_s1/checkpoints/ckpt_9999.pt",
+  "env_steps": 1310720000,
+  "wall_time_h": 4.107963029079967,
+  "eval/successes_per_episode": 1.51708984375,
+  "eval/successes_median": 2.0,
+  "eval/return": 40318.5390625,
+  "eval/rot_dist": 0.613173246383667,
+  "eval/on_goal_frac": 0.5369002819061279,
+  "eval/fall_rate": 0.193359375,
+  "eval/episode_length_s": 8.787956237792969
+}

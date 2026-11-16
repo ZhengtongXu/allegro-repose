@@ -1,0 +1,26 @@
+# PPO: Isaac Lab's rsl_rl runner config for Isaac-Repose-Cube-Allegro-Direct-v0
+# (isaaclab_tasks/direct/allegro_hand/agents/rsl_rl_ppo_cfg.py: AllegroHandPPORunnerCfg) on rsl_rl 5.4.
+name: ppo
+num_envs: 8192            # Isaac Lab scene default for this task
+num_steps_per_env: 16
+max_iterations: 10000
+actor_hidden: [1024, 512, 256, 128]
+critic_hidden: [1024, 512, 256, 128]
+activation: elu
+obs_normalization: true   # actor_obs_normalization = critic_obs_normalization = True
+init_std: 1.0
+learning_rate: 5.0e-4
+schedule: adaptive
+desired_kl: 0.016
+gamma: 0.99
+lam: 0.95
+clip_param: 0.2
+entropy_coef: 0.005
+value_loss_coef: 1.0
+num_learning_epochs: 5
+num_mini_batches: 4
+max_grad_norm: 1.0
+save_interval: 250        # iterations (Isaac Lab: 250)
+eval_interval: 250        # iterations
+keep_last: 3              # newest checkpoints kept
+keep_every: 0             # > 0: also keep every iteration divisible by this
